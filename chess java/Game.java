@@ -217,10 +217,63 @@ public class Game {
           return false;
         }
       }
-        
-      
     }
     if(temp instanceof Queen){
+      int tempx=0;
+      int tempy=0;
+      if(Math.abs(y1-y2)==Math.abs(x1-x2)){
+        for(int i=1;i<Math.abs(y1-y2);i++){
+          if(x1>x2){
+            tempx =x1-i;
+          }else{
+            tempx =x1+i;
+          }
+          if(y1>y2){
+            tempy =y1-i;
+          }else{
+            tempy =y1+i;
+          }
+          if(board[tempy][tempx]!=null){
+            System.out.println("Invalid Move");
+            return false;
+          }
+        }  
+      }else if(x1==x2){
+        if(y1<y2){
+          for(int i = y1+1; i<y2;i++){
+            if(board[i][x1]!=null){
+              System.out.println("Invalid move");
+              return false;
+            }
+          }
+        }else{
+          for(int i = y1-1; i>y2;i--){
+            if(board[i][x1]!=null){
+              System.out.println("Invalid move");
+              return false;
+            }
+          }
+        }
+      }else if(y1==y2){
+        if(x1<x2){
+          for(int i = x1+1; i<x2;i++){
+            if(board[y1][i]!=null){
+              System.out.println("Invalid move");
+              return false;
+            }
+          }
+        }else{
+          for(int i = x1-1; i>y2;i--){
+            if(board[y1][i]!=null){
+              System.out.println("Invalid move");
+              return false;
+            }
+          }
+        }
+      }else{
+        System.out.println("invalid move");
+        return false;
+      }
       
     }
     if(board[y2][x2]!=null && temp.isWhite == board[y2][x2].isWhite){
