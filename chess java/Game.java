@@ -10,8 +10,8 @@ public class Game {
   }
   public Game(int moves) {
   }
-  public void addPawn(boolean isWhite, int posX, int posY, boolean doubleMove) {
-    Pieces p = new Pawn(isWhite, posX, posY, doubleMove);
+  public void addPawn(boolean isWhite, int posX, int posY, boolean doubleMove, boolean enpassent) {
+    Pieces p = new Pawn(isWhite, posX, posY, doubleMove, enpassent);
     board[posY][posX] = p;
   }
   public void addKnight(boolean isWhite, int posX, int posY) {
@@ -34,7 +34,7 @@ public class Game {
     Pieces p = new King(isWhite, posX, posY, kasteling);
     board[posY][posX] = p;
   }
-  public void getGame(){
+  public void getGame(int moves){
     for (int j = 7; j >=0; j--) {
     if(j%2==0){
       System.out.println("______|      |______|      |______|      |______|      ");
@@ -46,8 +46,14 @@ public class Game {
           if(board[j][i] instanceof Pawn){
             if(board[j][i].isWhite()){
               System.out.print("_PAWN_");
+              if(((Pawn)board[j][i]).isEnpassent() && moves%2==0){
+                ((Pawn)board[j][i]).setEnpassent(false);
+              }
             }else{
               System.out.print("_pawn_");
+              if(((Pawn)board[j][i]).isEnpassent() && moves%2!=0){
+                ((Pawn)board[j][i]).setEnpassent(false);
+              }
             }
           }else if(board[j][i] instanceof Bishop){
             if(board[j][i].isWhite()){
@@ -155,12 +161,14 @@ public class Game {
     }
     if(temp instanceof Pawn){
       if(x1==x2){
-      	if(y2>y1+2 || y2==y1+2 && !((Pawn)temp).isDoubleMove() || y2<y1&& ((Pawn)temp).isWhite() || y2>y1&& !((Pawn)temp).isWhite()){
+      	if(y2>=y1+2 && !((Pawn)temp).isDoubleMove() || y2<y1&& ((Pawn)temp).isWhite() || y2>y1&& !((Pawn)temp).isWhite()|| y2==y1+2 && ((Pawn)temp).isDoubleMove() && board[y1+1][x1]!=null){
           System.out.println("Invalid move");
           return false;
         }
         
-      }else if(((temp.isWhite && y2==y1+1) 
+      }else if(board[y1][x2]!=null && board[y1][x2] instanceof Pawn && ((Pawn)board[y1][x2]).isEnpassent() && board[y1][x2].isWhite != temp.isWhite){
+        board[y1][x2] = null;
+      }else if(board[y2][x2]!=null &&((temp.isWhite && y2==y1+1) 
               || (!temp.isWhite && y2==y1-1)) 
               && (x2==x1+1 || x2==x1-1) 
               && (board[y2][x2].isWhite != temp.isWhite)){
@@ -168,6 +176,9 @@ public class Game {
       }else{
         System.out.println("Invalid Move");
         return false;
+      }
+      if(y2==y1+2 || y2==y1-2){
+        ((Pawn)temp).setEnpassent(true);
       }
     }
     if(temp instanceof King){
@@ -321,7 +332,7 @@ public class Game {
     Game g = new Game(0);
     //White pieces
     for (int i = 0; i < 8; i++) {
-      g.addPawn(true, i, 1, true);
+      g.addPawn(true, i, 1, true, false);
     }
     g.addRook(true, 0, 0, true);
     g.addRook(true, 7, 0, true);
@@ -333,7 +344,7 @@ public class Game {
     g.addQueen(true, 3, 0);
     
     for (int i = 0; i < 8; i++) {
-      g.addPawn(false, i, 6, true);
+      g.addPawn(false, i, 6, true, false);
     }
     g.addRook(false, 0, 7, true);
     g.addRook(false, 7, 7, true);
@@ -345,7 +356,7 @@ public class Game {
     g.addQueen(false, 3, 7);
     
     while(gameRunning){
-      g.getGame();
+      g.getGame(g.getMoves());
       Scanner sc= new Scanner(System.in);
       System.out.println("Please enter your next move (in format posXposY_pos2Xpos2Y): ");
       String str= sc.nextLine();
@@ -361,7 +372,7 @@ public class Game {
       if(g.isCheckmate()){
         gameRunning = false;
         sc.close();
-        g.getGame();
+        g.getGame(g.getMoves());
       }
     }
   }
