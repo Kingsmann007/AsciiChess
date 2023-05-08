@@ -195,6 +195,29 @@ public class Game {
       }
     }
     if(temp instanceof Bishop){
+      int tempx=0;
+      int tempy=0;
+      if(!(Math.abs(y1-y2)==Math.abs(x1-x2))){
+        System.out.println("Invalid move");
+        return false;
+      }
+      for(int i=1;i<Math.abs(y1-y2);i++){
+        if(x1>x2){
+          tempx =x1-i;
+        }else{
+          tempx =x1+i;
+        }
+        if(y1>y2){
+          tempy =y1-i;
+        }else{
+          tempy =y1+i;
+        }
+        if(board[tempy][tempx]!=null){
+          System.out.println("Invalid Move");
+          return false;
+        }
+      }
+        
       
     }
     if(temp instanceof Queen){
