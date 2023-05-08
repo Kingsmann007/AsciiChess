@@ -273,6 +273,11 @@ public class Game {
       Scanner sc= new Scanner(System.in);
       System.out.println("Please enter your next move (in format posXposY_pos2Xpos2Y): ");
       String str= sc.nextLine();
+      if(str.equals("stop")){
+        System.out.println("Game ended in remis");
+        gameRunning = false;
+        return;
+      }
       if(g.move(str, g.getMoves())){
         g.setMoves(g.getMoves()+1);
       }
