@@ -4,3 +4,4 @@ To move pieces enter starting coordinates of piece and target position separated
 You win the game by capturing the opponents king (for now)
 
 Still under development!!!
+Might add a python version later(to play in Shell)
