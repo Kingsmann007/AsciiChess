@@ -103,6 +103,16 @@ public class Game {
     }
   }
   public boolean move( String move, int movei){
+    if(move.length()!=5){
+      System.out.println("Invalid Move");
+      return false;
+    }
+    for(int i=0;i<5;i++){
+      if(i!=2 && (move.charAt(i)>56 || move.charAt(i)<49)){
+        System.out.println(i);
+        return false;
+      }
+    }
     int x1=Character.getNumericValue(move.charAt(0))-1;
     int y1=Character.getNumericValue(move.charAt(1))-1;
     int x2=Character.getNumericValue(move.charAt(3))-1;
