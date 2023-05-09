@@ -34,7 +34,7 @@ public class Game {
     Pieces p = new King(isWhite, posX, posY, kasteling);
     board[posY][posX] = p;
   }
-  public void getGame(int moves){
+  public void getGame(){
     for (int j = 7; j >=0; j--) {
     if(j%2==0){
       System.out.println("______|      |______|      |______|      |______|      ");
@@ -46,12 +46,12 @@ public class Game {
           if(board[j][i] instanceof Pawn){
             if(board[j][i].isWhite()){
               System.out.print("_PAWN_");
-              if(((Pawn)board[j][i]).isEnpassent() && moves%2==0){
+              if(((Pawn)board[j][i]).isEnpassent() && this.getMoves()%2==0){
                 ((Pawn)board[j][i]).setEnpassent(false);
               }
             }else{
               System.out.print("_pawn_");
-              if(((Pawn)board[j][i]).isEnpassent() && moves%2!=0){
+              if(((Pawn)board[j][i]).isEnpassent() && this.getMoves()%2!=0){
                 ((Pawn)board[j][i]).setEnpassent(false);
               }
             }
@@ -102,7 +102,7 @@ public class Game {
       System.out.println();
     }
   }
-  public boolean move( String move, int movei){
+  public boolean move( String move){
     if(move.length()!=5){
       System.out.println("Invalid Move");
       return false;
@@ -121,12 +121,11 @@ public class Game {
     if(temp==null){
       System.out.println("Invalid move");
       return false;
-    }else 
-      if(temp.isWhite==false && movei %2==0){
+    }else if(temp.isWhite==false && this.getMoves() %2==0){
         System.out.println("It's White's turn!");
         return false;
       }else{
-        if(temp.isWhite && movei %2==1){
+        if(temp.isWhite && this.getMoves() %2==1){
           System.out.println("It's Black's turn!");
           return false;
         }
@@ -301,6 +300,10 @@ public class Game {
       System.out.println("Invalid Move");
       return false;
     }
+    if(this.isCheck()){
+      System.out.println("You are currrently in check");
+      return false;
+    }
     board[y1][x1]=null;
     board[y2][x2]=temp; 
     
@@ -337,6 +340,26 @@ public class Game {
       return false;
     }
   }
+  public boolean isCheck(){
+    for(int y=0; y<8; y++){
+      for(int x=0; x<8; x++){
+        if(board[y][x]!=null){
+          if(board[y][x] instanceof Pawn ){
+            if(!(board[y][x].isWhite) && this.getMoves()%2==0){
+              if(y!=0 && x!=0 && y!=7 && x!=7 && (board[y-1][x-1] instanceof King && board[y-1][x-1].isWhite || board[y-1][x+1] instanceof King && board[y-1][x+1].isWhite)){
+                return true;
+              }
+            }else if(board[y][x].isWhite && this.getMoves()%2!=0){
+              if(y!=0 && x!=0 && y!=7 && x!=7 && (board[y+1][x-1] instanceof King && !(board[y+1][x-1].isWhite) || board[y+1][x+1] instanceof King && !(board[y+1][x+1].isWhite))){
+                return true;
+              }
+            }
+          }
+        }
+      }
+    }
+    return false;
+  }
   public static void main(String[] args) {
     boolean gameRunning = true;
     Game g = new Game(0);
@@ -366,7 +389,7 @@ public class Game {
     g.addQueen(false, 3, 7);
     
     while(gameRunning){
-      g.getGame(g.getMoves());
+      g.getGame();
       Scanner sc= new Scanner(System.in);
       System.out.println("Please enter your next move (in format posXposY_pos2Xpos2Y): ");
       String str= sc.nextLine();
@@ -376,13 +399,13 @@ public class Game {
         sc.close();
         return;
       }
-      if(g.move(str, g.getMoves())){
+      if(g.move(str)){
         g.setMoves(g.getMoves()+1);
       }
       if(g.isCheckmate()){
         gameRunning = false;
         sc.close();
-        g.getGame(g.getMoves());
+        g.getGame();
       }
     }
   }
