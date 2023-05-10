@@ -1,5 +1,5 @@
 # AsciiChess
-Fully funktioning in terminal
+Fully functioning in terminal
 
 To play Chess run Game.java
 
