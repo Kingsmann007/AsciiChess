@@ -2,6 +2,7 @@ import java.util.*;
 public class Game {
   private Pieces board[][] = new Pieces[8][8];
   private int moves;
+  private Pieces boardt[][] = new Pieces[8][8];
   public int getMoves() {
 	 return moves;
   }
@@ -103,6 +104,7 @@ public class Game {
     }
   }
   public boolean move( String move){
+    boardt=board;
     if(move.length()!=5){
       System.out.println("Invalid Move");
       return false;
@@ -300,13 +302,15 @@ public class Game {
       System.out.println("Invalid Move");
       return false;
     }
+    boardt=board;
+    board[y1][x1]=null;
+    board[y2][x2]=temp;
     if(this.isCheck()){
       System.out.println("You are currrently in check");
+      boardt = board;
       return false;
-    }
-    board[y1][x1]=null;
-    board[y2][x2]=temp; 
-    
+    } 
+    board = boardt;
     if(board[y2][x2] instanceof Rook){
       ((Rook)board[y2][x2]).setKasteling(false);
     }else if(board[y2][x2] instanceof King){
@@ -343,19 +347,20 @@ public class Game {
   public boolean isCheck(){
     for(int y=0; y<8; y++){
       for(int x=0; x<8; x++){
-        if(board[y][x]!=null){
+        if(board[y][x]!=null && !(board[y][x].isWhite) && this.getMoves()%2==0){
           if(board[y][x] instanceof Pawn ){
-            if(!(board[y][x].isWhite) && this.getMoves()%2==0){
-              if(y!=0 && x!=0 && y!=7 && x!=7 && (board[y-1][x-1] instanceof King && board[y-1][x-1].isWhite || board[y-1][x+1] instanceof King && board[y-1][x+1].isWhite)){
-                return true;
-              }
-            }else if(board[y][x].isWhite && this.getMoves()%2!=0){
-              if(y!=0 && x!=0 && y!=7 && x!=7 && (board[y+1][x-1] instanceof King && !(board[y+1][x-1].isWhite) || board[y+1][x+1] instanceof King && !(board[y+1][x+1].isWhite))){
-                return true;
-              }
+            if(y!=0 && x!=0 && y!=7 && x!=7 && (board[y-1][x-1] instanceof King && board[y-1][x-1].isWhite || board[y-1][x+1] instanceof King && board[y-1][x+1].isWhite)){
+               return true;
             }
           }
-        }
+          if(board[y][x] instanceof Knight){
+            if(board[y+2][x+1] instanceof King &&  y<6 && x>0 && board[y+2][x-1].isWhite ||board[y+2][x+1] instanceof King &&  y<6 && x>0 && board[y+2][x-1].isWhite ||board[y+2][x+1] instanceof King &&  y<6 && x>0 && board[y+2][x-1].isWhite || board[y+2][x+1] instanceof King &&  y<6 && x>0 && board[y+2][x-1].isWhite || board[y+2][x+1] instanceof King &&  y<6 && x>0 && board[y+2][x-1].isWhite || board[y+2][x+1] instanceof King &&  y<6 && x>0 && board[y+2][x-1].isWhite || board[y+2][x+1] instanceof King &&  y<6 && x>0 && board[y+2][x-1].isWhite ||board[y+2][x+1] instanceof King &&  y<6 && x>0 && board[y+2][x-1].isWhite ){
+              System.out.print("Invalid Move");
+              return false;
+            }
+          }
+          
+        }else if(board != null && board[y][x].isWhite && this.getMoves()%2!=0){}
       }
     }
     return false;
