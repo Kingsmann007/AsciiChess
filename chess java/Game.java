@@ -302,11 +302,11 @@ public class Game {
       System.out.println("Invalid Move");
       return false;
     }
-    if(this.isCheck()){
+    /*if(this.isCheck()){
       System.out.println("You are currrently in check");
       boardt = board;
       return false;
-    }
+    }*/
     board[y1][x1]=null;
     board[y2][x2]=temp;
     
@@ -350,32 +350,58 @@ public class Game {
           if(board[y][x] != null){
             if(!(board[y][x].isWhite) && this.getMoves()%2==0){
               if(board[y][x] instanceof Pawn ){
-              if(y!=0 && x!=0 && y!=7 && x!=7 && (board[y-1][x-1] instanceof King && board[y-1][x-1].isWhite || board[y-1][x+1] instanceof King && board[y-1][x+1].isWhite)){
-                return true;
+                if(y!=0 && x!=0 && y!=7 && x!=7 && (board[y-1][x-1] instanceof King && board[y-1][x-1].isWhite || board[y-1][x+1] instanceof King && board[y-1][x+1].isWhite)){
+                  return true;
+                }
               }
-            }
               if(board[y][x] instanceof Knight){
-              if(y<6 && x<7 && board[y+2][x+1] instanceof King && board[y+2][x+1].isWhite  
-              || y<6 && x>0 && board[y+2][x-1] instanceof King && board[y+2][x-1].isWhite 
-              || y>2 && x>1 && board[y-2][x-1] instanceof King && board[y-2][x-1].isWhite
-              || y>2 && x<7 && board[y-2][x+1] instanceof King && board[y-2][x+1].isWhite 
-              || y<7 && x<6 && board[y+1][x+2] instanceof King && board[y+1][x+2].isWhite 
-              || y>1 && x<6 && board[y-1][x+2] instanceof King && board[y-1][x+2].isWhite 
-              || y<7 && x>2 && board[y+1][x-2] instanceof King && board[y+1][x-2].isWhite 
-              || y>1 && x>2 && board[y-1][x-2] instanceof King && board[y-1][x-2].isWhite ){
-                return true;
+                if(y<6 && x<7 && board[y+2][x+1] instanceof King && board[y+2][x+1].isWhite  
+                || y<6 && x>0 && board[y+2][x-1] instanceof King && board[y+2][x-1].isWhite 
+                || y>2 && x>1 && board[y-2][x-1] instanceof King && board[y-2][x-1].isWhite
+                || y>2 && x<7 && board[y-2][x+1] instanceof King && board[y-2][x+1].isWhite 
+                || y<7 && x<6 && board[y+1][x+2] instanceof King && board[y+1][x+2].isWhite 
+                || y>1 && x<6 && board[y-1][x+2] instanceof King && board[y-1][x+2].isWhite 
+                || y<7 && x>2 && board[y+1][x-2] instanceof King && board[y+1][x-2].isWhite 
+                || y>1 && x>2 && board[y-1][x-2] instanceof King && board[y-1][x-2].isWhite ){
+                  return true;
+                }
               }
-            }
               if(board[y][x] instanceof Rook){
+                boolean xm = true;
+                boolean xp = true;
+                boolean ym = true;
+                boolean yp = true;
+                for(int i=0; i<8 ; i++){
+                  if(xp && x+i<8 && board[y][x+i] != null){
+                    
+                    if(board[y][x+i] instanceof King && board[y][x+i].isWhite) return true;
+                    xp = false;
+                  } 
+                  if(xm && x-i>=0 && board[y][x-i] != null){
+                    
+                    if(board[y][x-i] instanceof King && board[y][x-i].isWhite) return true;
+                    xm = false;
+                  }
+                  if(yp && y+i<8 && board[y+i][x] != null){
+                    
+                    if(board[y+i][x] instanceof King && board[y+i][x].isWhite) return true;
+                    yp = false;
+                  }
+                  if(ym && y-i>=0 && board[y-i][x] != null){
+                    
+                    if(board[y-i][x] instanceof King && board[y-i][x].isWhite) return true;
+                    ym = false;
+                  }
+                }
 
-            }
+              }
               if(board[y][x] instanceof Bishop){
 
-            }
+              }
               if(board[y][x] instanceof Queen){}
             }else if(board[y][x].isWhite && this.getMoves()%2!=0){
 
-          }
+            }
           }
         }
       }
