@@ -304,7 +304,6 @@ public class Game {
     }
     /*if(this.isCheck()){
       System.out.println("You are currrently in check");
-      boardt = board;
       return false;
     }*/
     board[y1][x1]=null;
@@ -374,22 +373,30 @@ public class Game {
                 for(int i=0; i<8 ; i++){
                   if(xp && x+i<8 && board[y][x+i] != null){
                     
-                    if(board[y][x+i] instanceof King && board[y][x+i].isWhite) return true;
+                    if(board[y][x+i] instanceof King && board[y][x+i].isWhite){
+                      return true;
+                    }
                     xp = false;
                   } 
                   if(xm && x-i>=0 && board[y][x-i] != null){
                     
-                    if(board[y][x-i] instanceof King && board[y][x-i].isWhite) return true;
+                    if(board[y][x-i] instanceof King && board[y][x-i].isWhite){ 
+                      return true;
+                    }
                     xm = false;
                   }
                   if(yp && y+i<8 && board[y+i][x] != null){
                     
-                    if(board[y+i][x] instanceof King && board[y+i][x].isWhite) return true;
+                    if(board[y+i][x] instanceof King && board[y+i][x].isWhite){
+                      return true;
+                    }
                     yp = false;
                   }
                   if(ym && y-i>=0 && board[y-i][x] != null){
                     
-                    if(board[y-i][x] instanceof King && board[y-i][x].isWhite) return true;
+                    if(board[y-i][x] instanceof King && board[y-i][x].isWhite){
+                      return true;
+                    }
                     ym = false;
                   }
                 }
