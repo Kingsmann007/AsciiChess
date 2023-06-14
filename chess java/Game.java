@@ -366,41 +366,43 @@ public class Game {
                 }
               }
               if(board[y][x] instanceof Rook){
-                boolean xm = true;
-                boolean xp = true;
-                boolean ym = true;
-                boolean yp = true;
+                boolean xNeg = true;
+                boolean xPos = true;
+                boolean yNeg = true;
+                boolean yPos = true;
                 for(int i=0; i<8 ; i++){
-                  if(xp && x+i<8 && board[y][x+i] != null){
+                  if(xPos && x+i<8 && (board[y][x+i] != null)){
                     if(board[y][x+i] instanceof King && board[y][x+i].isWhite){
-                      xp = false;
                       return true;
                     }
+                    xPos = false;
                   } 
-                  if(xm && x-i>=0 && board[y][x-i] != null){
+                  if(xNeg && x-i>=0 && (board[y][x-i] != null)){
                     if(board[y][x-i] instanceof King && board[y][x-i].isWhite){ 
-                      xm = false;
                       return true;
                     }
+                    xNeg = false;
                   }
-                  if(yp && y+i<8 && board[y+i][x] != null){
+                  if(yPos && y+i<8 && (board[y+i][x] != null)){
                     if(board[y+i][x] instanceof King && board[y+i][x].isWhite){
-                      yp = false;
                       return true;
                     }
+                    yPos = false;
                   }
-                  if(ym && y-i>=0 && board[y-i][x] != null){
+                  if(yNeg && y-i>=0 && (board[y-i][x] != null)){
                     if(board[y-i][x] instanceof King && board[y-i][x].isWhite){
-                      ym = false;
                       return true;
                     }
+                    yNeg = false;
                   }
                 }
               }
               if(board[y][x] instanceof Bishop){
 
               }
-              if(board[y][x] instanceof Queen){}
+              if(board[y][x] instanceof Queen){
+              
+              }
             }else if(board[y][x].isWhite && this.getMoves()%2!=0){
 
             }
@@ -440,7 +442,7 @@ public class Game {
     while(gameRunning){
       g.getGame();
       Scanner sc= new Scanner(System.in);
-      System.out.println("Please enter your next move (in format posXposY_pos2Xpos2Y): ");
+      System.out.println("Please enter your next move (in format posXPosY_posX2posY2): ");
       String str= sc.nextLine();
       if(str.equals("stop")){
         System.out.println("Game ended in remis");
